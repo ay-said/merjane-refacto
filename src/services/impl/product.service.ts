@@ -26,8 +26,9 @@ export class ProductService {
 			this.ns.sendOutOfStockNotification(p.name);
 			p.available = 0;
 			await this.db.update(products).set(p).where(eq(products.id, p.id));
-		} else if (p.seasonStartDate! > currentDate) {
+		} else if (p.seasonStartDate! > new Date(currentDate.getTime() + (p.leadTime * d))) {
 			this.ns.sendOutOfStockNotification(p.name);
+			p.available = 0;
 			await this.db.update(products).set(p).where(eq(products.id, p.id));
 		} else {
 			await this.notifyDelay(p.leadTime, p);

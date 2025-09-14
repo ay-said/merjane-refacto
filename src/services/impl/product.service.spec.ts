@@ -7,16 +7,17 @@ import {type INotificationService} from '../notifications.port.js';
 import {createDatabaseMock, cleanUp} from '../../utils/test-utils/database-tools.ts.js';
 import {ProductService} from './product.service.js';
 import {products, type Product} from '@/db/schema.js';
-import {type Database} from '@/db/type.js';
+import {type Database, type sqliteDatabase} from '@/db/type.js';
 
 describe('ProductService Tests', () => {
 	let notificationServiceMock: DeepMockProxy<INotificationService>;
 	let productService: ProductService;
 	let databaseMock: Database;
 	let databaseName: string;
+	let sqlite: sqliteDatabase;
 
 	beforeEach(async () => {
-		({databaseMock, databaseName} = await createDatabaseMock());
+		({databaseMock, databaseName, sqlite} = await createDatabaseMock());
 		notificationServiceMock = mockDeep<INotificationService>();
 		productService = new ProductService({
 			ns: notificationServiceMock,
@@ -24,7 +25,11 @@ describe('ProductService Tests', () => {
 		});
 	});
 
-	afterEach(async () => cleanUp(databaseName));
+	afterEach(async () => {
+		sqlite.close()
+		cleanUp(databaseName)
+	}
+	);
 
 	it('should handle delay notification correctly', async () => {
 		// GIVEN

@@ -8,7 +8,7 @@ import {createDatabaseMock, cleanUp} from '../../utils/test-utils/database-tools
 import {ProductService} from './product.service.js';
 import {products, type Product} from '@/db/schema.js';
 import {type Database, type sqliteDatabase} from '@/db/type.js';
-const day = 24 * 60 * 60 * 1000;
+import { DAY_MILLESECONDS } from '@/constants.js';
 describe('ProductService Tests', () => {
 	let notificationServiceMock: DeepMockProxy<INotificationService>;
 	let productService: ProductService;
@@ -67,8 +67,8 @@ describe('ProductService Tests', () => {
 			type: 'SEASONAL',
 			name: 'Lemon',
 			expiryDate: null,
-			seasonStartDate: new Date(Date.now() - (2 * day)),
-			seasonEndDate: new Date(Date.now() + (2 * day)),
+			seasonStartDate: new Date(Date.now() - (2 * DAY_MILLESECONDS)),
+			seasonEndDate: new Date(Date.now() + (2 * DAY_MILLESECONDS)),
 		};
 		await databaseMock.insert(products).values(product);
 
@@ -94,8 +94,8 @@ describe('ProductService Tests', () => {
 			type: 'SEASONAL',
 			name: 'Lemon',
 			expiryDate: null,
-			seasonStartDate: new Date(Date.now() + (8 * day)),
-			seasonEndDate: new Date(Date.now() + (50 * day)),
+			seasonStartDate: new Date(Date.now() + (11 * DAY_MILLESECONDS)),
+			seasonEndDate: new Date(Date.now() + (50 * DAY_MILLESECONDS)),
 		};
 		await databaseMock.insert(products).values(product);
 
@@ -121,8 +121,8 @@ describe('ProductService Tests', () => {
 			type: 'SEASONAL',
 			name: 'Lemon',
 			expiryDate: null,
-			seasonStartDate: new Date(Date.now() - (1 * day)),
-			seasonEndDate: new Date(Date.now() + (30 * day)),
+			seasonStartDate: new Date(Date.now() - (1 * DAY_MILLESECONDS)),
+			seasonEndDate: new Date(Date.now() + (30 * DAY_MILLESECONDS)),
 		};
 		await databaseMock.insert(products).values(product);
 
@@ -147,7 +147,7 @@ describe('ProductService Tests', () => {
 			available: 2,
 			type: 'EXPIRABLE',
 			name: 'Bread',
-			expiryDate: new Date(Date.now() + (5 * day)),
+			expiryDate: new Date(Date.now() + (5 * DAY_MILLESECONDS)),
 			seasonStartDate: null,
 			seasonEndDate: null,
 		};
@@ -173,7 +173,7 @@ describe('ProductService Tests', () => {
 			available: 2,
 			type: 'EXPIRABLE',
 			name: 'Bread',
-			expiryDate: new Date(Date.now() - (5 * day)),
+			expiryDate: new Date(Date.now() - (5 * DAY_MILLESECONDS)),
 			seasonStartDate: null,
 			seasonEndDate: null,
 		};
